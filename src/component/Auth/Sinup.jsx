@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Context } from "../../ContexApi/CreateApi";
 
 const Signup = () => {
+  const { isAuthorized, setIsAuthorized } = useContext(Context);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,13 +28,10 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { isAuthorized, setIsAuthorized, user, setUser } =
-      useContext(Context);
-
     try {
       // Make HTTP POST request to register endpoint
       const response = await axios.post(
-        "http://localhost:4000/api/v1/user/register",
+        "https://assingmentbackend.onrender.com/api/v1/user/register",
         formData,
         {
           headers: {
@@ -56,7 +55,7 @@ const Signup = () => {
     }
   };
 
-  if (isAuthorized) {
+  if (!isAuthorized) {
     return <Navigate to={"/"} />;
   }
 

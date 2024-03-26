@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Context } from "../../ContexApi/CreateApi";
 
 function Navbar() {
+  const { user } = useContext(Context);
+  console.log(user);
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container">
+      <div className="container-fluid">
         <a className="navbar-brand" href="#">
           Navbar
         </a>
@@ -19,39 +23,57 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Home
-              </a>
+              </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Home
-              </a>
+            <li>
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to={"/job/getall"}
+              >
+                JobDetails
+              </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Home
-              </a>
-            </li>
+
+            {user && user.role === "Employer" ? (
+              <>
+                <li>
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to={"/job/post"}
+                    onClick={() => setShow(false)}
+                  >
+                    POST NEW JOB
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="nav-link active"
+                    aria-current="page"
+                    to={"/job/me"}
+                    onClick={() => setShow(false)}
+                  >
+                    VIEW YOUR JOBS
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to={"applications/me"}
+                >
+                  My Application
+                </Link>
+              </li>
+            )}
           </ul>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
         </div>
       </div>
     </nav>
